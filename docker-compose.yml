@@ -1,0 +1,44 @@
+version: "3"
+
+services:
+  server-a:                         # Name of this service
+    image: zeus-group/server-a      # Name of this image after build
+    depends_on:                     # Service to start before this one
+      - rapid-runner-rabbit
+    # How to start this service/container:
+    command: ./utils/wait-for-it.sh rapid-runner-rabbit:5672 -s -t 0 -- npm start
+    build:                          # Define build context
+      dockerfile: Dockerfile
+      context: ./backend/server-a
+    expose:                         # Expose this port to other services
+      - "8080"
+    ports:                          # Map ports (host:container)
+      - "2222:8080"
+    networks:                       # Networks to which this service belongs
+      - backend
+
+  rapid-runner-rabbit:              # Name of this service
+    image: rabbitmq:3-management    # Base image of this image
+    expose:                         # Expose this port to other services
+      - "5672"
+    ports:                          # Map ports (So that it can be used for managment from host machine)
+      - "3333:5672"
+    networks:                       # Networks to which this service belongs
+      - backend
+
+  server-b:                         # Name of this service
+    image: zeus-group/server-b      # Name of this image after build
+    depends_on:                     # Service to start before this one
+      - rapid-runner-rabbit
+    # How to start this service/container:
+    command: ./utils/wait-for-it.sh rapid-runner-rabbit:5672 -s -t 0 -- npm start
+    build:                          # Define build context
+      dockerfile: Dockerfile
+      context: ./backend/server-b
+    expose:                         # Expose this port to other services
+      - "9090"
+    networks:                       # Networks to which this service belongs
+      - backend
+
+networks:                           # Create these networks
+  backend:

@@ -1,0 +1,19 @@
+{
+  "name": "server-a",
+  "version": "1.0.0",
+  "description": "node js express api for sandwitch ordering project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Zannatul Ferdous",
+  "license": "ISC",
+  "keywords": [],
+  "dependencies": {
+    "amqplib": "^0.10.3",
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "nodemon": "^2.0.22"
+  }
+}
